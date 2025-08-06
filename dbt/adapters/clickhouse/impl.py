@@ -16,6 +16,7 @@ from typing import (
     Union,
 )
 
+
 from dbt.adapters.base import AdapterConfig, available
 from dbt.adapters.base.impl import BaseAdapter, ConstraintSupport
 from dbt.adapters.base.relation import BaseRelation, InformationSchema
@@ -604,7 +605,7 @@ def _expect_row_value(key: str, row: "agate.Row"):
 
 
 def _catalog_filter_schemas(
-    used_schemas: FrozenSet[Tuple[str, str]]
+    used_schemas: FrozenSet[Tuple[str, str]],
 ) -> Callable[["agate.Row"], bool]:
     """Return a function that takes a row and decides if the row should be
     included in the catalog output.

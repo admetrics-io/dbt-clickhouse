@@ -129,7 +129,8 @@
 
 {% macro on_cluster_clause(relation, force_sync) %}
   {% set active_cluster = adapter.get_clickhouse_cluster_name() %}
-  {%- if active_cluster is not none and relation.should_on_cluster %}
+  {%- set disabled = config.get('disable_on_cluster', 'false') | lower == 'true' -%}
+  {%- if active_cluster is not none and relation.should_on_cluster and not disabled %}
     {# Add trailing whitespace to avoid problems when this clause is not last #}
     ON CLUSTER {{ active_cluster + ' ' }}
     {%- if force_sync %}
@@ -164,7 +165,7 @@
 {% macro add_index_and_projections(relation) %}
     {%- set projections = config.get('projections', default=[]) -%}
     {%- set indexes = config.get('indexes', default=[]) -%}
-    
+
     {% if projections | length > 0 or indexes | length > 0 %}
         {% call statement('add_projections_and_indexes') %}
             ALTER TABLE {{ relation }}
