@@ -111,7 +111,7 @@
 
   {%- if adapter.get_clickhouse_cluster_name() is not none and obj_types == 'TABLES' and 'Replicated' in engine_clause() %}
     {%- call statement('exchange_table_sync_replica') -%}
-      SYSTEM SYNC REPLICA  {{ on_cluster_clause(target_relation) }} {{ target_relation.schema }}.{{ target_relation.identifier }}
+      SYSTEM SYNC REPLICA  {{ on_cluster_clause(target_relation) }} {{ target_relation.schema }}.{{ target_relation.identifier }} LIGHTWEIGHT
     {% endcall %}
   {%- endif %}
   {%- call statement('exchange_tables_atomic') -%}
